@@ -1,16 +1,17 @@
-name: Full E2E Tests
+name: Smoke Tests
 
-# Full suite runs only on PRs targeting main — the merge gate.
+# Fast feedback on every push to a feature branch.
+# Runs only the @smoke-tagged tests (~6 tests, ~30s).
 on:
-  pull_request:
-    branches: [main, master]
+  push:
+    branches-ignore: [main, master]
   workflow_dispatch:
 
 jobs:
-  test:
-    name: Playwright E2E (full)
+  smoke:
+    name: Smoke (@smoke)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -25,8 +26,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Cache browser binaries so repeat runs skip the 100 MB download
       - name: Cache Playwright browsers
         uses: actions/cache@v4
+        id: pw-cache
         with:
           path: ~/.cache/ms-playwright
           key: pw-chromium-${{ hashFiles('package-lock.json') }}
@@ -34,26 +37,17 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
 
-      - name: Run full test suite
-        run: npx playwright test
+      - name: Run smoke tests
+        run: npx playwright test --grep @smoke
         env:
           CI: true
-          DB_PATH: /tmp/test.db
+          DB_PATH: /tmp/smoke.db
 
-      - name: Upload HTML report
+      - name: Upload smoke report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-${{ github.run_id }}
+          name: smoke-report-${{ github.run_id }}
           path: playwright-report/
-          retention-days: 14
-          if-no-files-found: ignore
-
-      - name: Upload test traces
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-traces-${{ github.run_id }}
-          path: test-results/
           retention-days: 7
           if-no-files-found: ignore

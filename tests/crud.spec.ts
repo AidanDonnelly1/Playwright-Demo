@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
 
 // ─── CREATE ───────────────────────────────────────────────────────────────────
 
-test('create: adds a new task and shows it in the list', async ({ page }) => {
+test('create: adds a new task and shows it in the list', { tag: '@smoke' }, async ({ page }) => {
   await expect(page.getByText('No tasks yet')).toBeVisible();
 
   await page.getByLabel('New task title').fill('Buy groceries');
@@ -55,14 +55,14 @@ test('read: tasks persist after page reload', async ({ page }) => {
   await expect(page.getByTestId('task-title').filter({ hasText: 'Persisted task' })).toBeVisible();
 });
 
-test('read: shows empty state when no tasks exist', async ({ page }) => {
+test('read: shows empty state when no tasks exist', { tag: '@smoke' }, async ({ page }) => {
   await expect(page.getByText('No tasks yet. Add one above!')).toBeVisible();
   await expect(page.getByTestId('task-title')).toHaveCount(0);
 });
 
 // ─── UPDATE via task list ─────────────────────────────────────────────────────
 
-test('update: marks a task as complete via checkbox on list page', async ({ page }) => {
+test('update: marks a task as complete via checkbox on list page', { tag: '@smoke' }, async ({ page }) => {
   await page.getByLabel('New task title').fill('Task to complete');
   await page.getByRole('button', { name: 'Add Task' }).click();
 
@@ -119,7 +119,7 @@ test('update: marks task complete from the detail page', async ({ page }) => {
 
 // ─── DELETE ───────────────────────────────────────────────────────────────────
 
-test('delete: removes a task from the list page', async ({ page }) => {
+test('delete: removes a task from the list page', { tag: '@smoke' }, async ({ page }) => {
   await page.getByLabel('New task title').fill('Delete me');
   await page.getByRole('button', { name: 'Add Task' }).click();
   await expect(page.getByTestId('task-title').filter({ hasText: 'Delete me' })).toBeVisible();

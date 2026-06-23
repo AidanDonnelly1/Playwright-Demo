@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke",
     "test:headed": "npx playwright test --headed",
     "test:ui": "npx playwright test --ui",
     "codegen": "npx playwright codegen http://localhost:3000",

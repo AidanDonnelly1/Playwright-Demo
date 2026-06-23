@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
-test('dashboard: shows correct stats with no tasks', async ({ page }) => {
+test('dashboard: shows correct stats with no tasks', { tag: '@smoke' }, async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#stat-total')).toHaveText('0');
   await expect(page.locator('#stat-pending')).toHaveText('0');
@@ -45,7 +45,7 @@ test('dashboard: stats reflect completed tasks', async ({ page }) => {
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
-test('navigation: nav links route between pages', async ({ page }) => {
+test('navigation: nav links route between pages', { tag: '@smoke' }, async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveURL('/');
   await expect(page.locator('nav a.active')).toHaveText('Dashboard');
