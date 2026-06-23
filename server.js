@@ -19,9 +19,26 @@ db.exec(`
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Page routes
+app.get('/tasks', (req, res) => res.sendFile(path.join(__dirname, 'public/tasks.html')));
+app.get('/tasks/:id', (req, res) => res.sendFile(path.join(__dirname, 'public/task.html')));
+
+// API
+app.get('/api/stats', (req, res) => {
+  const total     = db.prepare('SELECT COUNT(*) as n FROM tasks').get().n;
+  const completed = db.prepare('SELECT COUNT(*) as n FROM tasks WHERE done = 1').get().n;
+  res.json({ total, completed, pending: total - completed });
+});
+
 app.get('/api/tasks', (req, res) => {
   const tasks = db.prepare('SELECT * FROM tasks ORDER BY created_at DESC').all();
   res.json(tasks);
+});
+
+app.get('/api/tasks/:id', (req, res) => {
+  const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(req.params.id);
+  if (!task) return res.status(404).json({ error: 'Task not found' });
+  res.json(task);
 });
 
 app.post('/api/tasks', (req, res) => {
@@ -41,25 +58,21 @@ app.put('/api/tasks/:id', (req, res) => {
   if (!task) return res.status(404).json({ error: 'Task not found' });
 
   const newTitle = title !== undefined ? title.trim() : task.title;
-  const newDone = done !== undefined ? (done ? 1 : 0) : task.done;
+  const newDone  = done  !== undefined ? (done ? 1 : 0) : task.done;
 
   if (!newTitle) return res.status(400).json({ error: 'Title cannot be empty' });
 
   db.prepare('UPDATE tasks SET title = ?, done = ? WHERE id = ?').run(newTitle, newDone, id);
-  const updated = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id);
-  res.json(updated);
+  res.json(db.prepare('SELECT * FROM tasks WHERE id = ?').get(id));
 });
 
 app.delete('/api/tasks/:id', (req, res) => {
-  const { id } = req.params;
-  const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id);
+  const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(req.params.id);
   if (!task) return res.status(404).json({ error: 'Task not found' });
-  db.prepare('DELETE FROM tasks WHERE id = ?').run(id);
+  db.prepare('DELETE FROM tasks WHERE id = ?').run(req.params.id);
   res.status(204).send();
 });
 
-app.listen(PORT, () => {
-  console.log(`Task Manager running at http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Task Manager running at http://localhost:${PORT}`));
 
 module.exports = app;

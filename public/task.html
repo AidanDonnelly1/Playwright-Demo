@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Detail — Task Manager</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <nav>
+    <a href="/" class="brand">Task Manager</a>
+    <a href="/">Dashboard</a>
+    <a href="/tasks" class="active">Tasks</a>
+  </nav>
+
+  <div class="page">
+    <div class="page-title">
+      <a href="/tasks">← Back to Tasks</a>
+      <h2 id="page-heading">Task Detail</h2>
+    </div>
+
+    <div class="card" id="task-card" style="display:none">
+      <div class="card-header">
+        <div>
+          <h1>Edit Task</h1>
+          <p id="task-meta-header"></p>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="detail-field">
+          <label for="title-input">Title</label>
+          <input id="title-input" type="text" maxlength="200" aria-label="Task title" />
+        </div>
+
+        <div class="detail-field">
+          <label>Status</label>
+          <div class="toggle-row">
+            <input type="checkbox" id="done-checkbox" aria-label="Mark complete" />
+            <label for="done-checkbox">Mark as complete</label>
+          </div>
+        </div>
+
+        <div class="detail-actions">
+          <button id="save-btn" class="btn btn-primary">Save Changes</button>
+          <button id="cancel-btn" class="btn btn-secondary">Cancel</button>
+          <button id="delete-btn" class="btn btn-danger" style="margin-left:auto">Delete Task</button>
+        </div>
+
+        <p class="detail-meta" id="created-at"></p>
+      </div>
+    </div>
+
+    <div id="not-found" style="display:none" class="card">
+      <div class="card-body">
+        <p style="color:var(--gray-500);text-align:center;padding:32px 0">Task not found. <a href="/tasks" style="color:var(--indigo)">Go back to Tasks</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="/js/task.js"></script>
+</body>
+</html>

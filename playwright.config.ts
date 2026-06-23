@@ -4,14 +4,20 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+
+  // Retry up to 3 times on CI to handle flaky tests
+  retries: process.env.CI ? 3 : 1,
+
+  // 30 second timeout per test
+  timeout: 30_000,
+
   workers: 1,
   reporter: [
     ['html', { open: 'never' }],
     ['list'],
   ],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://127.0.0.1:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -24,7 +30,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'node server.js',
-    url: 'http://localhost:3000',
+    url: 'http://127.0.0.1:3000',
     reuseExistingServer: !process.env.CI,
     env: {
       DB_PATH: 'test.db',

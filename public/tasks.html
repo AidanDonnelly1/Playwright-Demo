@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasks — Task Manager</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <nav>
+    <a href="/" class="brand">Task Manager</a>
+    <a href="/">Dashboard</a>
+    <a href="/tasks" class="active">Tasks</a>
+  </nav>
+
+  <div class="page">
+    <div class="page-title">
+      <h2>All Tasks</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h1>Add a Task</h1>
+          <p>Hit Enter or click Add Task</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <input id="new-task-input" type="text" placeholder="Task title…" maxlength="200" aria-label="New task title" />
+          <button id="add-btn" class="btn btn-primary">Add Task</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-header">
+        <h1>Task List</h1>
+        <span id="task-count" style="margin-left:auto;font-size:0.85rem;color:var(--gray-500)"></span>
+      </div>
+      <div class="card-body" style="padding-top:4px">
+        <div class="task-list" id="task-list">
+          <div class="empty" id="empty-state">No tasks yet. Add one above!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="/js/tasks.js"></script>
+</body>
+</html>
