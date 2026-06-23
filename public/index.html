@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 560px;
+      overflow: hidden;
+    }
+
+    header {
+      background: #4f46e5;
+      color: #fff;
+      padding: 28px 32px;
+    }
+
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+    header p  { font-size: 0.875rem; opacity: .75; margin-top: 4px; }
+
+    .add-section {
+      padding: 24px 32px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      gap: 12px;
+    }
+
+    #new-task-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color .15s;
+      outline: none;
+    }
+    #new-task-input:focus { border-color: #4f46e5; }
+    #new-task-input::placeholder { color: #9ca3af; }
+
+    #add-btn {
+      padding: 10px 20px;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+      white-space: nowrap;
+    }
+    #add-btn:hover { background: #4338ca; }
+    #add-btn:disabled { background: #a5b4fc; cursor: not-allowed; }
+
+    #task-list { padding: 16px 32px 32px; }
+
+    .empty-state {
+      text-align: center;
+      color: #9ca3af;
+      padding: 48px 0;
+      font-size: 0.95rem;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .task-item:last-child { border-bottom: none; }
+
+    .task-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: #4f46e5;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .task-title {
+      flex: 1;
+      font-size: 0.95rem;
+      color: #111827;
+      word-break: break-word;
+    }
+    .task-title.done {
+      text-decoration: line-through;
+      color: #9ca3af;
+    }
+
+    .task-edit-input {
+      flex: 1;
+      padding: 4px 8px;
+      border: 1.5px solid #4f46e5;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .task-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    .btn-edit, .btn-save, .btn-cancel, .btn-delete {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn-edit   { background: #e0e7ff; color: #4f46e5; }
+    .btn-save   { background: #d1fae5; color: #065f46; }
+    .btn-cancel { background: #f3f4f6; color: #6b7280; }
+    .btn-delete { background: #fee2e2; color: #b91c1c; }
+    .btn-edit:hover, .btn-save:hover, .btn-cancel:hover, .btn-delete:hover { opacity: .8; }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #111827;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+    }
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Task Manager</h1>
+      <p>A Playwright CRUD demo</p>
+    </header>
+
+    <div class="add-section">
+      <input
+        id="new-task-input"
+        type="text"
+        placeholder="Add a new task…"
+        maxlength="200"
+        aria-label="New task title"
+      />
+      <button id="add-btn">Add Task</button>
+    </div>
+
+    <div id="task-list">
+      <div class="empty-state" id="empty-state">No tasks yet. Add one above!</div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "playwright-demo",
+  "version": "1.0.0",
+  "description": "CRUD app demo for Playwright CI showcase",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "codegen": "npx playwright codegen http://localhost:3000",
+    "report": "npx playwright show-report",
+    "trace": "npx playwright show-trace"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.4.3",
+    "express": "^4.18.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/better-sqlite3": "^7.6.10",
+    "@types/node": "^20.12.7"
+  }
+}
